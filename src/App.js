@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import $ from 'jquery';
+//var employeeService = require('./data.js');
+var createReactClass = require('create-react-class');
 
-var Header = React.createClass({
+var Header = createReactClass({
     render: function () {
         return (
             <h1 className="title">{this.props.text}</h1>
@@ -10,7 +11,7 @@ var Header = React.createClass({
     }
 });
 
-var SearchBar = React.createClass({
+var SearchBar = createReactClass({
 	getInitialState: function() {
 		return {searchKey: ""};
 	},
@@ -26,7 +27,7 @@ var SearchBar = React.createClass({
     }
 });
 
-var ProviderListItem = React.createClass({
+var ProviderListItem = createReactClass({
     render: function () {
       return (
           <li>
@@ -38,7 +39,7 @@ var ProviderListItem = React.createClass({
     }
 });
 
-var ProviderList = React.createClass({
+var ProviderList = createReactClass({
     render: function () {
     	var items = this.props.providers.map(function (provider) {
     		return (
@@ -53,24 +54,77 @@ var ProviderList = React.createClass({
     }
 });
 
-var App = React.createClass({
+var HomePage = createReactClass({
+	getInitialState: function() {
+		return {providers: []}
+	},
 	searchHandler: function(key) {
-		alert('Search key: ' + key);
+//        this.props.service.findByName(key).done(function(result) {
+        findByName(key).done(function(result) {
+			this.setState({searchKey: key, providers: result});
+		}.bind(this));
 	},
     render: function () {
-    	var providers = [
-    		{id:1, last_name:"Harris", first_name:"Mike"},
-    		{id:2, last_name:"Wijoyo", first_name:"Bimo"},
-    		{id:3, last_name:"Rose", first_name:"Nate"}
-    	];
         return (
             <div>
                 <Header text="Provider Directory"/>
                 <SearchBar searchHandler={this.searchHandler} />
-                <ProviderList providers={providers} />
+                <ProviderList providers={this.state.providers} />
             </div>
         );
     }
 });
 
+
+var App = createReactClass({
+    render: function () {
+        return (
+//            <HomePage service={employeeService} />
+            <HomePage />
+        );
+    }
+  });
+
+    var findById = function (id) {
+            var deferred = $.Deferred();
+            var provider = null;
+            var l = providers.length;
+            for (var i = 0; i < l; i++) {
+                if (providers[i].id == id) {
+                    provider = providers[i];
+                    break;
+                }
+            }
+            deferred.resolve(provider);
+            return deferred.promise();
+        },
+
+        findByName = function (searchKey) {
+            var deferred = $.Deferred();
+            var results = providers.filter(function (element) {
+                var full_name = element.first_name + " " + element.last_name;
+                return full_name.toLowerCase().indexOf(searchKey.toLowerCase()) > -1;
+            });
+            deferred.resolve(results);
+            return deferred.promise();
+        },
+
+        findBySpecialty = function (searchKey) {
+            var deferred = $.Deferred();
+            var results = providers.filter(function (element) {
+                return element.specialty.toLowerCase().indexOf(searchKey.toLowerCase()) > -1;
+            });
+            deferred.resolve(results);
+            return deferred.promise();
+        },
+
+        providers = [
+    		{"id": 1, "last_name": "Harris", "first_name": "Mike", "email_address": "mharris@acme.com", "specialty": "Pediatrics", "practice_name": "Harris Pediatrics"},
+    		{"id": 2, "last_name": "Wijoyo", "first_name": "Bimo", "email_address": "bwijoyo@acme.com", "specialty": "Podiatry", "practice_name": "Wijoyo Podiatry"},
+    		{"id": 3, "last_name": "Rose", "first_name": "Nate", "email_address": "nrose@acme.com", "specialty": "Surgery", "practice_name": "Rose Cutters"},
+    		{"id": 4, "last_name": "Carlson", "first_name": "Mike", "email_address": "mcarlson@acme.com", "specialty": "Orthopedics", "practice_name": "Carlson Orthopedics"},
+    		{"id": 5, "last_name": "Witting", "first_name": "Mike", "email_address": "mwitting@acme.com", "specialty": "Pediatrics", "practice_name": "Witting’s Well Kids Pediatrics"},
+    		{"id": 6, "last_name": "Juday", "first_name": "Tobin", "email_address": "tjuday@acme.com", "specialty": "General Medicine", "practice_name": "Juday Family Practice"}
+		];
+		
 export default App;
