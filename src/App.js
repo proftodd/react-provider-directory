@@ -11,9 +11,17 @@ var Header = React.createClass({
 });
 
 var SearchBar = React.createClass({
+	getInitialState: function() {
+		return {searchKey: ""};
+	},
+	searchHandler: function(event) {
+		var searchKey = event.target.value;
+		this.setState({searchKey: searchKey});
+		this.props.searchHandler(searchKey);
+	},
     render: function () {
         return (
-            <input type="search" />
+            <input type="search" value={this.state.symbol} onChange={this.searchHandler} />
         );
     }
 });
@@ -46,6 +54,9 @@ var ProviderList = React.createClass({
 });
 
 var App = React.createClass({
+	searchHandler: function(key) {
+		alert('Search key: ' + key);
+	},
     render: function () {
     	var providers = [
     		{id:1, last_name:"Harris", first_name:"Mike"},
@@ -55,7 +66,7 @@ var App = React.createClass({
         return (
             <div>
                 <Header text="Provider Directory"/>
-                <SearchBar />
+                <SearchBar searchHandler={this.searchHandler} />
                 <ProviderList providers={providers} />
             </div>
         );
