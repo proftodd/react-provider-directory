@@ -1,8 +1,12 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import $ from 'jquery';
 //var employeeService = require('./data.js');
+//var router = require('./router.js');
 var createReactClass = require('create-react-class');
 
+	var routes = [];
+	
 var Header = createReactClass({
     render: function () {
         return (
@@ -75,11 +79,51 @@ var HomePage = createReactClass({
     }
 });
 
+var ProviderPage = createReactClass({
+	getInitialState: function() {
+		return {provider: {}};
+	},
+	componentDidMount: function() {
+//		this.props.service.findById(this.props.providerId).done(function(result) {
+		findById(this.props.providerId).done(function(result) {
+			this.setState({provider: result});
+		}.bind(this));
+	},
+	render: function() {
+		return (
+			<div>
+				<Header text="Provider Details" />
+				<h3>{this.state.provider.first_name} {this.state.provider.last_name}</h3>
+				{this.state.provider.specialty}
+			</div>
+		);
+	}
+});
+
+//router.addRoute('', function() {
+addRoute('', function() {
+	ReactDOM.render(
+//		<HomePage service={providerService} />,
+		<HomePage />,
+		document.getElementById('root')
+	);
+});
+
+//router.addRoute('providers/:id', function(id) {
+addRoute('providers/:id', function(id) {
+	ReactDOM.render(
+//		<ProviderPage providerId={id} service={providerService} />,
+		<ProviderPage providerId={id} />,
+		document.getElementById('root')
+	);
+});
+
+router_start();
 
 var App = createReactClass({
     render: function () {
         return (
-//            <HomePage service={employeeService} />
+//            <HomePage service={providerService} />
             <HomePage />
         );
     }
@@ -126,5 +170,39 @@ var App = createReactClass({
     		{"id": 5, "last_name": "Witting", "first_name": "Mike", "email_address": "mwitting@acme.com", "specialty": "Pediatrics", "practice_name": "Witting’s Well Kids Pediatrics"},
     		{"id": 6, "last_name": "Juday", "first_name": "Tobin", "email_address": "tjuday@acme.com", "specialty": "General Medicine", "practice_name": "Juday Family Practice"}
 		];
+
+	function addRoute(route, handler) {
+		routes.push({parts: route.split('/'), handler: handler});
+	}
+	
+	function load(route) {
+		window.location.hash = route;
+	}
+	
+	function router_start() {
+		var path = window.location.hash.substr(1),
+			parts = path.split('/'),
+			partsLength = parts.length;
 		
+		for (var i = 0; i < routes.length; ++i) {
+			var route = routes[i];
+			if (route.parts.length === partsLength) {
+				var params = [];
+				for (var j = 0; j < partsLength; ++j) {
+					if (route.parts[j].substr(0, 1) === ':') {
+						params.push(parts[j]);
+					} else if (route.parts[j] !== parts[j]) {
+						break;
+					}
+				}
+				if (j === partsLength) {
+					route.handler.apply(undefined, params);
+					return;
+				}
+			}
+		}
+	}
+	
+	window.onhashchange = router_start;
+	
 export default App;
