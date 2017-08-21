@@ -5,6 +5,7 @@ import $ from 'jquery';
 //var router = require('./router.js');
 var createReactClass = require('create-react-class');
 
+var providers = require('./providers.json');
 	var routes = [];
 	
 var Header = createReactClass({
@@ -160,16 +161,7 @@ var App = createReactClass({
             });
             deferred.resolve(results);
             return deferred.promise();
-        },
-
-        providers = [
-    		{"id": 1, "last_name": "Harris", "first_name": "Mike", "email_address": "mharris@acme.com", "specialty": "Pediatrics", "practice_name": "Harris Pediatrics"},
-    		{"id": 2, "last_name": "Wijoyo", "first_name": "Bimo", "email_address": "bwijoyo@acme.com", "specialty": "Podiatry", "practice_name": "Wijoyo Podiatry"},
-    		{"id": 3, "last_name": "Rose", "first_name": "Nate", "email_address": "nrose@acme.com", "specialty": "Surgery", "practice_name": "Rose Cutters"},
-    		{"id": 4, "last_name": "Carlson", "first_name": "Mike", "email_address": "mcarlson@acme.com", "specialty": "Orthopedics", "practice_name": "Carlson Orthopedics"},
-    		{"id": 5, "last_name": "Witting", "first_name": "Mike", "email_address": "mwitting@acme.com", "specialty": "Pediatrics", "practice_name": "Witting’s Well Kids Pediatrics"},
-    		{"id": 6, "last_name": "Juday", "first_name": "Tobin", "email_address": "tjuday@acme.com", "specialty": "General Medicine", "practice_name": "Juday Family Practice"}
-		];
+        };
 
 	function addRoute(route, handler) {
 		routes.push({parts: route.split('/'), handler: handler});
