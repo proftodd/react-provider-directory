@@ -1,10 +1,10 @@
+# Getting started with React
+
 A project to learn React.js by creating a searchable and editable provider directory.
 
-I'll be following along with a project I found on the web at http://coenraets.org/blog/2014/12/sample-mobile-application-with-react-and-cordova.
+I'll be following along with a project I found on the web at <http://coenraets.org/blog/2014/12/sample-mobile-application-with-react-and-cordova>.
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
-
-Getting started with React
 
 ## Linux
 
@@ -32,7 +32,7 @@ Getting started with React
 * Install the React project create tool:
   * sudo npm install -g create-react-app
 * Create a React application:
-  * create-react-app <app name>
+  * create-react-app &lt;app name&gt;
 
 ## Example:
 
@@ -44,4 +44,11 @@ Getting started with React
   This added a line to the dependencies section of package.json. Maybe I can do that myself next time. That at least gets the $.Deferred() to compile.
 * In order to read from an external file had to add another dependency:
   * npm i json-loader --save
+  * Reference <https://stackoverflow.com/a/42724521/1617932>
+
+* When switching to another workspace, need to run npm install to download and install the dependencies there.
+  * Reference <https://stackoverflow.com/a/44794838/1617932>
+
+* Figured out ES6-style modularization and imports.
+  * Reference <https://www.jvandemo.com/a-10-minute-primer-to-javascript-modules-module-formats-module-loaders-and-module-bundlers/>
 
