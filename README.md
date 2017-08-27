@@ -52,3 +52,5 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 * Figured out ES6-style modularization and imports.
   * Reference <https://www.jvandemo.com/a-10-minute-primer-to-javascript-modules-module-formats-module-loaders-and-module-bundlers/>
 
+* Example for CRUD operations:
+  * <http://vitalflux.com/reactjs-tutorial-add-delete-table-row-dynamically>
